@@ -1,3 +1,5 @@
 /bank/db.sqlite3
 /bank/bank/__pycache__/*
-/bank/bank/__init__.py
+/bank/api/migrations
+
+
