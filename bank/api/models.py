@@ -32,6 +32,11 @@ class Replenishment(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     account = models.ForeignKey(Account, on_delete=models.CASCADE,
                                 related_name='replenishment')
+    
+    @property
+    def replenishment_date(self):
+        date = self.date.strftime("%d.%m.%Y %H:%M:%S")
+        return f"Amount: {str(self.amount)} - Date: {date}"
 
     def __str__(self):
         return f'Account {self.account.id} was topped up on {str(self.amount)}'
