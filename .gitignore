@@ -6,4 +6,6 @@ bank/users/__pycache__/*
 /venv/
 bank/users/migrations/
 bank/api/migrations/
-
+bank/web/__pycache__/*
+upload/
+.DS_Store

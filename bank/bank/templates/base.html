@@ -1,0 +1,34 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>
+    {% block title %}
+        bank
+    {% endblock title %}
+</title>
+<link href="{% static 'main.css' %}" rel="stylesheet" type="text/css">
+</head>
+<div class="sidenav">
+        {% if user.is_authenticated %}
+            <div class="sidetext">Hello, <a href="{% url 'home' %}">{{ user.username }}</a></div>
+            <a href="{% url 'logout' %}">Log out</a>
+            <a href="{% url 'account' %}">Account</a>
+            <a href="#">Balance</a>
+            <a href="#">Transaction</a>
+        {% else %}
+            <div class="sidetext">Not logged in.</div>
+            <a href="{% url 'login' %}">Log in</a>
+        {% endif %}
+</div>
+<body>
+    {% block avatar %}
+    {% endblock %}
+    <div class="content">
+        {% block content %}
+            Hello 404
+        {% endblock %}
+    </div>
+</body>
+</html>

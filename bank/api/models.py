@@ -5,10 +5,10 @@ import os
 
 class Customer(models.Model):
 
-    def customer_image_file_path(filename):
+    def customer_image_file_path(instan, filename):
         ext = filename.split('.')[-1]
         filename = f'{uuid.uuid4()}.{ext}'
-        return os.path.join('upload/customer/', filename)
+        return os.path.join('upload/customer/'+filename)
 
     name = models.CharField(max_length=40)
     surname = models.CharField(max_length=40)
