@@ -58,4 +58,4 @@ class Transfer(models.Model):
     to_account = models.ForeignKey(Account, on_delete=models.CASCADE,
                                      related_name='to_account')
     amount = models.DecimalField(max_digits=12, decimal_places=2)
-
+    

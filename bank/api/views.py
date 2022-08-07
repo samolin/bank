@@ -1,6 +1,6 @@
-from .serializers import AccountSerializer, CustomerSerializer
+from .serializers import AccountSerializer, CustomerSerializer, ReplenishmentSerializer
 from rest_framework import generics, mixins, viewsets
-from .models import Account, Customer
+from .models import Account, Customer, Replenishment
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import ValidationError
@@ -33,6 +33,24 @@ class CustomerView(viewsets.GenericViewSet,
         instance = self.get_object()
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
+
+class ReplenishmentView(viewsets.GenericViewSet,
+                        mixins.ListModelMixin,
+                        mixins.CreateModelMixin):
+
+    serializer_class = ReplenishmentSerializer
+    queryset = Replenishment.objects.all()
+    permission_classes = [IsAuthenticated,]
+
+    def get_queryset(self):
+        accounts = Account.objects.filter(user=self.request.user)
+        return self.queryset.filter(account__in=accounts)
+
+    #def create(self, request, *args, **kwargs):
+
+    
+        
+    
 
 
 
