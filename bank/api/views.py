@@ -51,15 +51,19 @@ class ReplenishmentView(viewsets.GenericViewSet,
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         print(Account.objects.filter(user=self.request.user).get(pk=self.request.data['account']))
+        #try:
+        #    account = Account.objects.filter(user=self.request.user).get(pk=self.request.data['account'])
+        #except Exception:
+        #    return Response('No such account', status=status.HTTP_400_BAD_REQUEST)
+        #serializer.save(account=account)
+        #return Response(serializer.data, status=status.HTTP_201_CREATED, )
+
         try:
-            account = Account.objects.filter(user=self.request.user).get(pk=self.request.data['account'])
-        except Exception:
-            return Response('No such account', status=status.HTTP_400_BAD_REQUEST)
-        serializer.save(account=account)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, )
-
-
-    
+            Replenishment.top_up(**serializer.validated_data)
+        except ValueError:
+            content = {'error': 'You have to add more than 0'}
+            return Response(content, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
         
     
 

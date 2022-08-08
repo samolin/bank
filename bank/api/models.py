@@ -1,7 +1,8 @@
-from django.db import models
+from django.db import models, transaction
 import uuid
 from django.conf import settings
 import os
+
 
 class Customer(models.Model):
 
@@ -40,6 +41,17 @@ class Replenishment(models.Model):
 
     def __str__(self):
         return f'Account {self.account.id} was topped up on {str(self.amount)}'
+    
+    @classmethod
+    def top_up(cls, amount, account):
+        if amount <= 0:
+            raise(ValueError('Replenichment must be more than 0'))
+        
+        with transaction.atomic():
+            account.balance += amount
+            account.save()
+            return account, amount
+
 
 
 class Transaction(models.Model):
@@ -58,4 +70,4 @@ class Transfer(models.Model):
     to_account = models.ForeignKey(Account, on_delete=models.CASCADE,
                                      related_name='to_account')
     amount = models.DecimalField(max_digits=12, decimal_places=2)
-    
+

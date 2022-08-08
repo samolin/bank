@@ -1,9 +1,17 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<form action="" enctype="multipart/form-data" method="post">
     {% for account in object_list %}    
         <li>Account {{account.id}}: {{ account.balance }}</li>
     {% endfor %}
+    {{ form.as_p }}
+    <tr>
+        <td>&nbsp;</td>
+        <td><input type="submit" value="Submit"></td>
+    </tr>
+    {% csrf_token %}
+</form>
 {% endblock %}
 
     

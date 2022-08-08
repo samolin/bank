@@ -1,5 +1,6 @@
 from users.models import CustomUser
 from django import forms
+from api.models import Replenishment
 
 
 class UserRegistartionForm(forms.ModelForm):
@@ -13,7 +14,7 @@ class UserRegistartionForm(forms.ModelForm):
     def clean_password2(self):
         cd = self.cleaned_data
         if cd['password'] != cd['password2']:
-            raise forms.ValidationError("Password don't match")
+            raise forms.ValidationError("Password doesn't match")
         return cd['password2']
 
 class LoginUser(forms.ModelForm):
@@ -23,4 +24,12 @@ class LoginUser(forms.ModelForm):
     class Meta: 
         model = CustomUser
         fields = ['username', 'password']
+    
+class ReplenishmentForm(forms.ModelForm):
+
+    class Meta:
+        model = Replenishment
+        fields = ['account', 'amount']
+
+        
     

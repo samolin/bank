@@ -1,10 +1,12 @@
 from django.shortcuts import render
 from requests import request
 from api.models import Customer, Account
-from .forms import UserRegistartionForm
-from django.contrib.auth.decorators import login_required
+from api.models import Replenishment
+from .forms import UserRegistartionForm, ReplenishmentForm
 from django.views import generic
 from django.shortcuts import get_object_or_404
+from django.views.generic.edit import CreateView
+from django.http import HttpResponse, HttpResponseRedirect
 
 
 def index(request):
@@ -31,24 +33,24 @@ def register(request):
     else: 
         user_form = UserRegistartionForm()
         return render(request, 'registration/register.html', {'user_form': user_form})
-
     
 
-class AccountView(generic.ListView):
-    model = Account
+class AccountView(CreateView):
+    form_class = ReplenishmentForm
     template_name = 'web/account.html'
-    def get_queryset(self):
-        return Account.objects.filter(user=self.request.user)
+    success_url = '/account'
 
-    #def get_queryset(self):
-    #    self.account = get_object_or_404(Account)
-    #    return Account.objects.filter(user=self.request.user)
-#
-    #data = Account.objects.filter(user=request.user)
-#
-    #print(data)
-    #context = {
-    #    data.balance
-    #}
-    #return render(request, 'web/account.html', context)
+    def get_context_data(self, **kwargs):
+        kwargs['object_list'] = Account.objects.filter(user= self.request.user)
+        return super(AccountView, self).get_context_data(**kwargs)
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        Replenishment.top_up(**form.cleaned_data)
+        return response
+
+
+
+
+
 
