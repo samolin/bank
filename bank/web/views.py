@@ -40,10 +40,14 @@ class AccountView(CreateView):
     template_name = 'web/account.html'
     success_url = '/account'
 
+    
     def get_context_data(self, **kwargs):
-        kwargs['object_list'] = Account.objects.filter(user= self.request.user)
+        if not self.request.user.is_superuser:
+            kwargs['object_list'] = Account.objects.filter(user= self.request.user)
+            return super(AccountView, self).get_context_data(**kwargs)
+        kwargs['object_list'] = Account.objects.all()
         return super(AccountView, self).get_context_data(**kwargs)
-
+    
     def form_valid(self, form):
         response = super().form_valid(form)
         Replenishment.top_up(**form.cleaned_data)

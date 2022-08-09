@@ -46,7 +46,6 @@ class Replenishment(models.Model):
     def top_up(cls, amount, account):
         if amount <= 0:
             raise(ValueError('Replenichment must be more than 0'))
-        
         with transaction.atomic():
             account.balance += amount
             account.save()
@@ -61,8 +60,15 @@ class Transaction(models.Model):
     purchase = models.CharField(max_length=255)
 
     def __str__(self):
-        return f'Account: {self.accoint.id} bought {self.purchase} for {self.amount}'
+        return f'Account: {self.account.id} bought {self.purchase} for {self.amount}'
 
+    @classmethod
+    def buy(cls, amount, account, purchase):
+        if amount > account.balance:
+            raise ValueError("You don't have enough money")
+        account.balance -= amount
+        account.save()
+        return account, amount
 
 class Transfer(models.Model):
     from_account = models.ForeignKey(Account, on_delete=models.CASCADE,

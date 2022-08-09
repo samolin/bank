@@ -1,29 +1,22 @@
 {% extends 'base.html' %}
 
-{% block avatar %}
-    {% if user.is_authenticated %}
-        {% if image %}
-            {% load static %}
-                <img class="avatar" src="{% static image %}"  alt="My image">
-        {% endif %}
-    {% endif %}
-{% endblock %}
+
 
 {% block content %}
     {% if user.is_authenticated %}
-        <style type="text/css">
-            ul {
-              list-style-type: none;
-            }
-        </style>
-        <ul {list-style-type: none;}>
+    {% if image %}
+            {% load static %}
+                <img class="avatar" src="{% static image %}"  alt="My image">
+        {% endif %}
+        
+        <ul>
             <li {list-style-type: none;}>Name: {{ name }}</li>
             <li>Surname: {{ surname }}</li>
             <li>Age: {{ age }}</li>
             <li>Location: {{ city }}</li>
         </ul>
     {% else %}
-    <div class="greeting">Добро пожаловать в наш топ банк</div>
+        <div class="greeting">Добро пожаловать в наш топ банк</div>
     {% endif %}
 {% endblock %}
 

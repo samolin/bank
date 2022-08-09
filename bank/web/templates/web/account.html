@@ -2,15 +2,19 @@
 
 {% block content %}
 <form action="" enctype="multipart/form-data" method="post">
-    {% for account in object_list %}    
-        <li>Account {{account.id}}: {{ account.balance }}</li>
-    {% endfor %}
-    {{ form.as_p }}
-    <tr>
-        <td>&nbsp;</td>
-        <td><input type="submit" value="Submit"></td>
-    </tr>
-    {% csrf_token %}
+    <ul>
+        {% for account in object_list %}  
+            <li>Account {% if request.user.is_superuser %}of {{ account.user }} {% endif %} {{ account.id }}: {{ account.balance }}</li>
+        {% endfor %}
+    </ul>
+    {% if request.user.is_superuser %}
+        {{ form.as_p }}
+        <tr>
+            <td>&nbsp;</td>
+            <td><input type="submit" value="Submit"></td>
+        </tr>
+        {% csrf_token %}
+    {% endif %}
 </form>
 {% endblock %}
 

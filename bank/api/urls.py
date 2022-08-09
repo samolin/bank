@@ -1,4 +1,4 @@
-from .views import AccountView, CustomerView, ReplenishmentView
+from .views import AccountView, CustomerView, ReplenishmentView, TransactionView
 from django.urls import path, include
 
 
@@ -7,5 +7,6 @@ urlpatterns = [
     path('accounts/', AccountView.as_view({'get': 'list', 'post':'create'})),
     path('customers/', CustomerView.as_view({'get': 'list', 'post': 'create'})),
     path('customer/<int:pk>/', CustomerView.as_view({'get': 'retrieve'})),
-    path('replenishment/', ReplenishmentView.as_view({'get': 'list', 'post': 'create'}))
+    path('replenishment/', ReplenishmentView.as_view({'get': 'list', 'post': 'create'})),
+    path('transactions/', TransactionView.as_view({'get': 'list', 'post': 'create'})),
 ]

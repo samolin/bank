@@ -11,7 +11,7 @@ body {
     height: 100%;
     width: 160px;
     position: fixed;
-    z-index: 1;
+    z-index: 0;
     top: 0;
     left: 0;
     background-color: #111;
@@ -39,21 +39,22 @@ body {
 .avatar {
     display: block;
     float: left;
-    margin-left: 160px;
     border: 5px solid rgb(40, 201, 207);
     max-width: 150px;
     max-height: 300px;
+    margin-right: 39px;
 }
 
 .content {
     display: block;
     float: right;
-    margin-top: 30px;
-    margin-left: 340px;
+    margin-top: 0px;
+    margin-left: 160px;
     width: 100%;
     height: 100%;
     position: absolute;
-    overflow: auto;
+    background-image: url('background.jpg');
+    background-size: cover;
 }
 
 .sidetext {
@@ -62,8 +63,8 @@ body {
 }
 
 .greeting {
-    
-    width: 100%;
+    overflow:hidden;
+    max-width: 100%;
     height: 250px;
     position: absolute;
     top: 0;
@@ -71,9 +72,13 @@ body {
     bottom: 0;
     left: 0;
     margin: auto;
-    border: 1px solid blue;
     text-align: center;
     font-family: "Lato", sans-serif; 
     color: #818181;
     font-size: 50px;
+    
+}
+
+ul {
+          list-style-type: none;
 }

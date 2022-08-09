@@ -1,6 +1,6 @@
 from requests import request
 from rest_framework import serializers
-from .models import Account, Customer, Replenishment
+from .models import Account, Customer, Replenishment, Transaction
 from bank.settings import AUTH_USER_MODEL
 
 
@@ -39,3 +39,13 @@ class ReplenishmentSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError('You have to put more than 0')
         return super(ReplenishmentSerializer, self).create(validated_data)
 
+class TransactionSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Transaction
+        fields = ['amount', 'account', 'purchase']
+
+    def __init__(self, *args, **kwargs):
+        super(TransactionSerializer, self).__init__(*args, **kwargs)
+        if 'request' in self.context:
+            self.fields['account'].queryset = self.fields['account'].queryset.filter(user=self.context['view'].request.user)
