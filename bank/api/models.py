@@ -51,8 +51,6 @@ class Replenishment(models.Model):
             account.save()
             return account, amount
 
-
-
 class Transaction(models.Model):
     amount = models.DecimalField(max_digits=12, decimal_places=2)
     date = models.DateTimeField(auto_now_add=True)
@@ -61,6 +59,11 @@ class Transaction(models.Model):
 
     def __str__(self):
         return f'Account: {self.account.id} bought {self.purchase} for {self.amount}'
+
+    @property
+    def transaction_date(self):
+        date = self.date.strftime("%d.%m.%Y %H:%M:%S")
+        return date
 
     @classmethod
     def buy(cls, amount, account, purchase):
@@ -77,3 +80,13 @@ class Transfer(models.Model):
                                      related_name='to_account')
     amount = models.DecimalField(max_digits=12, decimal_places=2)
 
+    @classmethod
+    def make_transfer(cls, from_account, to_account, amount):
+        if amount > from_account.balance:
+            raise ValueError("You don't have enough money")
+        with transaction.atomic():
+            from_account.balance -= amount
+            to_account.balance += amount
+            from_account.save()
+            to_account.save()
+            return from_account, to_account, amount

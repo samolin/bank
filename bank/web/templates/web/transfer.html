@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% for transfer in object_list %}
+        <ul>
+            <li>{{ transfer.from_account }}</li>
+            <li>{{ transfer.to_account }}</li>
+            <li>{{ transfer.amount }}</li>
+        </ul>
+    {% endfor %}
+    <form action="" enctype="multipart/form-data" method="post">
+        {{ form.as_p }}
+        <tr>
+            <td>&nbsp;</td>
+            <td><input type="submit" value="Send"></td>
+        </tr>
+        {% csrf_token %}
+    </form>
+{% endblock %}
+
+
+

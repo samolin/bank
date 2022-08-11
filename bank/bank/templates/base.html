@@ -15,8 +15,8 @@
             <div class="sidetext">Hello, <a href="{% url 'home' %}">{{ user.username }}</a></div>
             <a href="{% url 'logout' %}">Log out</a>
             <a href="{% url 'account' %}">Account</a>
-            <a href="#">Balance</a>
-            <a href="#">Transaction</a>
+            <a href="{% url 'transaction' %}">Transaction</a>
+            <a href="{% url 'transfer' %}">Transfer</a>
         {% else %}
             <div class="sidetext">Not logged in.</div>
             <a href="{% url 'login' %}">Log in</a>

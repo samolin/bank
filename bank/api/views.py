@@ -1,6 +1,7 @@
-from .serializers import AccountSerializer, CustomerSerializer, ReplenishmentSerializer, TransactionSerializer
+from .serializers import AccountSerializer, CustomerSerializer, ReplenishmentSerializer,\
+                         TransactionSerializer, TransferSerializer
 from rest_framework import mixins, viewsets
-from .models import Account, Customer, Replenishment, Transaction
+from .models import Account, Customer, Replenishment, Transaction, Transfer
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import ValidationError
@@ -68,7 +69,7 @@ class TransactionView(viewsets.GenericViewSet,
 
     def get_queryset(self):
         accounts = Account.objects.filter(user=self.request.user)
-        return self.queryset.filter(account__in=accounts)
+        return self.queryset.filter(account__in=accounts).order_by('-id')
     
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -81,8 +82,28 @@ class TransactionView(viewsets.GenericViewSet,
             return Response(content, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
+class TransferView(viewsets.GenericViewSet,
+                   mixins.ListModelMixin,
+                   mixins.CreateModelMixin):
+    serializer_class = TransferSerializer
+    queryset = Transfer.objects.all()
+    permission_classes = [IsAuthenticated,]
+
+    def get_queryset(self):
+        accounts = Account.objects.filter(user=self.request.user)
+        print(self.queryset.filter(from_account__in=accounts))
+        return self.queryset.filter(from_account__in=accounts)
     
-        
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        try:
+            Transfer.make_transfer(**serializer.validated_data)
+            serializer.save()
+        except:
+            content = 'There is not enough money'
+            return Response(content, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
     
 
 

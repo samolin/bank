@@ -1,12 +1,8 @@
 from django.shortcuts import render
-from requests import request
-from api.models import Customer, Account
-from api.models import Replenishment
-from .forms import UserRegistartionForm, ReplenishmentForm
-from django.views import generic
+from api.models import Customer, Account, Replenishment, Transaction, Transfer
+from .forms import UserRegistartionForm, ReplenishmentForm, TransactionForm, TransferForm
 from django.shortcuts import get_object_or_404
 from django.views.generic.edit import CreateView
-from django.http import HttpResponse, HttpResponseRedirect
 
 
 def index(request):
@@ -40,10 +36,9 @@ class AccountView(CreateView):
     template_name = 'web/account.html'
     success_url = '/account'
 
-    
     def get_context_data(self, **kwargs):
         if not self.request.user.is_superuser:
-            kwargs['object_list'] = Account.objects.filter(user= self.request.user)
+            kwargs['object_list'] = Account.objects.filter(user=self.request.user)
             return super(AccountView, self).get_context_data(**kwargs)
         kwargs['object_list'] = Account.objects.all()
         return super(AccountView, self).get_context_data(**kwargs)
@@ -53,7 +48,32 @@ class AccountView(CreateView):
         Replenishment.top_up(**form.cleaned_data)
         return response
 
+class TransactionView(CreateView):
+    form_class = TransactionForm
+    template_name = 'web/transaction.html'
+    success_url = '/transaction'
 
+    def get_context_data(self, **kwargs):
+        if self.request.user.is_superuser:
+            kwargs['object_list'] = Transaction.objects.all()
+            return super(TransactionView, self).get_context_data(**kwargs)
+        accounts = Account.objects.filter(user=self.request.user)
+        kwargs['object_list'] = Transaction.objects.filter(account__in=accounts)
+        return super(TransactionView, self).get_context_data(**kwargs)
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        Transaction.buy(**form.cleaned_data)
+        return response
+
+class TransferView(CreateView):
+    form_class = TransferForm
+    template_name = 'web/transfer.html'
+    success_url = '/transfer'
+
+    def get_context_data(self, **kwargs):
+        kwargs['object_list'] = Transfer.objects.all()
+        return super(TransferView, self).get_context_data(**kwargs)
 
 
 

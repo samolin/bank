@@ -1,6 +1,6 @@
 from users.models import CustomUser
 from django import forms
-from api.models import Replenishment
+from api.models import Replenishment, Transaction, Transfer
 
 
 class UserRegistartionForm(forms.ModelForm):
@@ -31,5 +31,15 @@ class ReplenishmentForm(forms.ModelForm):
         model = Replenishment
         fields = ['account', 'amount']
 
+class TransactionForm(forms.ModelForm):
+
+    class Meta:
+        model = Transaction
+        fields = ['account', 'amount', 'purchase']
         
+class TransferForm(forms.ModelForm):
+
+    class Meta:
+        model = Transfer
+        fields = ['from_account', 'to_account', 'amount']
     

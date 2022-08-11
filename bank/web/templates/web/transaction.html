@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% for transaction in object_list %}  
+        <ul>
+            <li>Sum: {{ transaction.amount }} - {{ transaction.date }}</li>
+            {% if request.user.is_superuser %}
+                <li>{{ transaction.account }}</li>
+            {% else %}
+                <li><li>Account №: {{ transaction.account.id }}</li></li>
+            {% endif %}
+            <li>Purchase: {{ transaction.purchase }}</li>
+        </ul>
+    {% endfor %}
+    <form action="" enctype="multipart/form-data" method="post">
+        {{ form.as_p }}
+        <tr>
+            <td>&nbsp;</td>
+            <td><input type="submit" value="Send"></td>
+        </tr>
+        {% csrf_token %}
+    </form>
+{% endblock %}

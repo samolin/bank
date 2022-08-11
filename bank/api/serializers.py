@@ -1,6 +1,6 @@
 from requests import request
 from rest_framework import serializers
-from .models import Account, Customer, Replenishment, Transaction
+from .models import Account, Customer, Replenishment, Transaction, Transfer
 from bank.settings import AUTH_USER_MODEL
 
 
@@ -43,9 +43,21 @@ class TransactionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Transaction
-        fields = ['amount', 'account', 'purchase']
+        fields = ['amount', 'transaction_date', 'account', 'purchase',]
+
 
     def __init__(self, *args, **kwargs):
         super(TransactionSerializer, self).__init__(*args, **kwargs)
         if 'request' in self.context:
             self.fields['account'].queryset = self.fields['account'].queryset.filter(user=self.context['view'].request.user)
+
+class TransferSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Transfer
+        fields = ['from_account', 'to_account', 'amount']
+
+    def __init__(self, *args, **kwargs):
+        super(TransferSerializer, self).__init__(*args,**kwargs)
+        if 'request' in self.context:
+            self.fields['from_account'].queryset = self.fields['from_account'].queryset.filter(user=self.context['view'].request.user)
