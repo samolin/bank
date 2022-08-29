@@ -10,13 +10,13 @@
         {% endif %}
         
         <ul>
-            <li {list-style-type: none;}>Name: {{ name }}</li>
+            <li>Name: {{ name }}</li>
             <li>Surname: {{ surname }}</li>
             <li>Age: {{ age }}</li>
             <li>Location: {{ city }}</li>
         </ul>
     {% else %}
-        <div class="greeting">Добро пожаловать в наш топ банк</div>
+        <h2>Добро пожаловать в наш топ банк</h2>
     {% endif %}
 {% endblock %}
 

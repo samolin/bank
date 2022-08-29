@@ -2,12 +2,73 @@
 body {
     font-family: "Lato", sans-serif;
     font-size: 24px;
-    background-color: #ffffff;;
+    background-color: #ffffff;
+    margin: 0;
+}
+
+ul {
+    list-style-type: none;
+}
+
+.navbar {
+    text-align: justify;
+    width: 100%;
+    height: 70px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, .1);
+}
+
+.navbar .container {
+    height: inherit;
+    display: flex;
+    justify-content: space-between;
+}
+
+.navbar-menu {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.navbar-menu li {
+    display: inline-block;
+}
+
+.navbar-menu li a {
+    text-decoration: none;
+    color: #000;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.navbar-menu li a:hover {
+    text-decoration: underline;
+}
+
+.navbar-wrap {
+    display: flex;
+    flex-flow: row nowrap;
+}
+
+.navbar-logo {
+    font-weight: 700;
+    font-size: 36px;
+    text-decoration: none;
+    color: #000;
+    text-align: center;
+    display: flex;
+    margin: 17px;
+    
+}
+
+.navbar-logo a {
+    margin-top: 10px;
+}
+.navbar .container img {
+    height: 8200px;
 }
 
 .sidenav {
     color: #818181;
-    margin-top: 0px;
+    margin-top: 70px;
     height: 100%;
     width: 160px;
     position: fixed;
@@ -19,17 +80,17 @@ body {
     padding-top: 20px;
 }
 
-.main {
-    margin-left: 160px;
-    padding: 0px 0px;
-}
-
 .sidenav a {
     padding: 6px 8px 6px 16px;
     text-decoration: none;
     font-size: 25px;
     color: #818181;
     display: block;
+}
+
+.sidetext {
+    color: #818181;
+    padding: 6px 8px 6px 16px;
 }
 
 .sidenav a:hover {
@@ -39,6 +100,7 @@ body {
 .avatar {
     display: block;
     float: left;
+    margin: 10px;
     border: 5px solid rgb(40, 201, 207);
     max-width: 150px;
     max-height: 300px;
@@ -46,33 +108,24 @@ body {
 }
 
 .content {
-    float: right;
-    margin-top: 0px;
     margin-left: 160px;
-    width: 100%;
-    overflow: hidden;
-    height: 100%;
-    position: fixed; top:0; left:0;
+    overflow: hidden scroll;
+    width: 100%-160px;
+    height: calc(100vh - 70px);
     background-image: url('background.jpg');
     background-size: cover;
     background-position: top center;
-
 }
 
-.sidetext {
-    color: #818181;
-    padding: 6px 8px 6px 16px;
-}
-
-.greeting {
+.content .container {
+    box-shadow: 0 0px 15px rgba(0, 0, 0, .6);;
+    display: block;
+    margin: 40px 120px;
+    height: flex;
+    min-height: calc(100% - 80px);
     text-align: center;
-    font-family: "Lato", sans-serif; 
-    color: #818181;
-    font-size: 50px;
-    margin-top: 15%;
-
+    border: solid 1px coral;
+    border-radius: 1%;
+    background-color: white;
 }
 
-ul {
-    list-style-type: none;
-}

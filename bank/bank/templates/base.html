@@ -1,16 +1,28 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>
-    {% block title %}
-        bank
-    {% endblock title %}
-</title>
-<link href="{% static 'main.css' %}" rel="stylesheet" type="text/css">
+    <meta charset="UTF-8">
+    <title>
+        {% block title %}
+            bank
+        {% endblock title %}
+    </title>
+    <link rel="stylesheet" href="/static/main.css" type="text/css">
 </head>
-<div class="sidenav">
+<body>
+    <nav class="navbar">
+        <div class="container">             
+                <a href="/" class="navbar-logo"> BANK</a>   
+            <div class="navbar-wrap">
+                <ul class="navbar-menu">
+                    <li><a href="#">О нас</a></li>
+                    <li><a href="#">Тарифы</a></li>
+                    <li><a href="#">Контакты</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="sidenav">
         {% if user.is_authenticated %}
             <div class="sidetext">Hello, <a href="{% url 'home' %}">{{ user.username }}</a></div>
             <a href="{% url 'logout' %}">Log out</a>
@@ -21,12 +33,13 @@
             <div class="sidetext">Not logged in.</div>
             <a href="{% url 'login' %}">Log in</a>
         {% endif %}
-</div>
-<body>
+    </div>
     <div class="content">
-        {% block content %}
-            Hello 404
-        {% endblock %}
+        <div class="container">
+            {% block content %}
+                Hello 404
+            {% endblock %}
+        </div>
     </div>
 </body>
 </html>
