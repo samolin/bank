@@ -1,21 +1,24 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<form action="" enctype="multipart/form-data" method="post">
-    <ul>
-        {% for account in object_list %}  
-            <li>Account {% if request.user.is_superuser %}of {{ account.user }} {% endif %} {{ account.id }}: {{ account.balance }}</li>
-        {% endfor %}
-    </ul>
-    {% if request.user.is_superuser %}
-        {{ form.as_p }}
-        <tr>
-            <td>&nbsp;</td>
-            <td><input type="submit" value="Submit"></td>
-        </tr>
-        {% csrf_token %}
-    {% endif %}
-</form>
+    <div class="main">
+        <h2>Accounts</h2>
+        <ul>
+            {% for account in object_list %}  
+                <li>Account {% if request.user.is_superuser %}of {{ account.user }} {% endif %} {{ account.id }}: {{ account.balance }}</li>
+            {% endfor %}
+        </ul>
+        <form action="" enctype="multipart/form-data" method="POST">
+            <div class="form">
+                {% if request.user.is_superuser %}
+                    {{ form.account.label }} {{ form.account }}
+                    {{ form.amount.label }} {{ form.amount }}
+                    <br><input type="submit" class="send-button" value="Send">
+                {% endif %}
+            </div>
+            {% csrf_token %}
+        </form>
+    </div>
 {% endblock %}
 
     

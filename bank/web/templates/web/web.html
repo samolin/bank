@@ -3,21 +3,22 @@
 
 
 {% block content %}
-    {% if user.is_authenticated %}
-    {% if image %}
-            {% load static %}
-                <img class="avatar" src="{% static image %}"  alt="My image">
+    <div class="main">
+        {% if user.is_authenticated %}
+        {% if image %}
+                {% load static %}
+                    <img class="avatar" src="{% static image %}"  alt="My image">
+            {% endif %}
+            <ul>
+                <li>Name: {{ name }}</li>
+                <li>Surname: {{ surname }}</li>
+                <li>Age: {{ age }}</li>
+                <li>Location: {{ city }}</li>
+            </ul>
+        {% else %}
+            <h1>Welcome to our bank</h1>
         {% endif %}
-        
-        <ul>
-            <li>Name: {{ name }}</li>
-            <li>Surname: {{ surname }}</li>
-            <li>Age: {{ age }}</li>
-            <li>Location: {{ city }}</li>
-        </ul>
-    {% else %}
-        <h2>Добро пожаловать в наш топ банк</h2>
-    {% endif %}
+    </div>
 {% endblock %}
 
     

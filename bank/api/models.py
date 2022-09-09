@@ -26,7 +26,7 @@ class Account(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
 
     def __str__(self):
-        return f'{self.user.username}: account {self.id}'
+        return f'{self.user.username}, account {self.id}'
 
 class Replenishment(models.Model):
     amount = models.DecimalField(max_digits=12, decimal_places=2)
@@ -59,6 +59,7 @@ class Transaction(models.Model):
 
     def __str__(self):
         return f'Account: {self.account.id} bought {self.purchase} for {self.amount}'
+
 
     @property
     def transaction_date(self):

@@ -1,23 +1,41 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    {% for transaction in object_list %}  
-        <ul>
-            <li>Sum: {{ transaction.amount }} - {{ transaction.date }}</li>
-            {% if request.user.is_superuser %}
-                <li>{{ transaction.account }}</li>
-            {% else %}
-                <li><li>Account №: {{ transaction.account.id }}</li></li>
-            {% endif %}
-            <li>Purchase: {{ transaction.purchase }}</li>
-        </ul>
-    {% endfor %}
-    <form action="" enctype="multipart/form-data" method="post">
-        {{ form.as_p }}
-        <tr>
-            <td>&nbsp;</td>
-            <td><input type="submit" value="Send"></td>
-        </tr>
-        {% csrf_token %}
-    </form>
+    <div class="main">
+        <h2>Transactions</h2>
+        {% for transaction in object_list.qs %} 
+            <ul>
+                <li>Sum: {{ transaction.amount }} - {{ transaction.date }}</li>
+                {% if request.user.is_superuser %}
+                    <li>Account: {{ transaction.account }}</li>
+                {% else %}
+                    <li>Account №: {{ transaction.account.id }}</li>
+                {% endif %}
+                <li>Purchase: {{ transaction.purchase }}</li>
+            </ul>
+        {% endfor %}
+        <form enctype="multipart/form-data" method="POST">
+            <div class ='form'>
+                {{ form.account.label }} {{ form.account }}
+                {{ form.amount.label }} {{ form.amount }}
+                {{ form.purchase.label }} {{ form.purchase }}
+                <br><input type="submit" value="Send" style="width:250px; height:40px;
+                border: 0;
+                border-radius: 0.375em;;
+                background:linear-gradient(180deg, rgba(52, 183, 89, 0.15) 0%, rgba(46, 164, 79, 0) 100%),#2ea44f !important;
+                color:#fff;
+                z-index: 1;
+                font-size:18px;
+                cursor:pointer; margin: 20px;">
+            </div>
+            {% csrf_token %}
+        </form>
+    </div>
+    <div class="filter">
+        <h3 class="filter-header">Filters</h3>
+        <form method="GET">
+            {{ object_list.form.as_p }}
+            <td><input type="submit" value="Search"></td>
+        </form>
+    </div> 
 {% endblock %}

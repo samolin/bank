@@ -1,9 +1,8 @@
 from django.shortcuts import render
 from api.models import Customer, Account, Replenishment, Transaction, Transfer
 from .forms import UserRegistartionForm, ReplenishmentForm, TransactionForm, TransferForm
-from django.shortcuts import get_object_or_404
 from django.views.generic.edit import CreateView
-
+from .filters import TransactionFilter, TransferFilter
 
 def index(request):
     if request.user.is_authenticated:
@@ -55,10 +54,10 @@ class TransactionView(CreateView):
 
     def get_context_data(self, **kwargs):
         if self.request.user.is_superuser:
-            kwargs['object_list'] = Transaction.objects.all()
+            kwargs['object_list'] = TransactionFilter(self.request.GET, queryset=Transaction.objects.all())
             return super(TransactionView, self).get_context_data(**kwargs)
         accounts = Account.objects.filter(user=self.request.user)
-        kwargs['object_list'] = Transaction.objects.filter(account__in=accounts)
+        kwargs['object_list'] = TransactionFilter(self.request.GET, queryset=Transaction.objects.filter(account__in=accounts))
         return super(TransactionView, self).get_context_data(**kwargs)
 
     def form_valid(self, form):
@@ -66,13 +65,18 @@ class TransactionView(CreateView):
         Transaction.buy(**form.cleaned_data)
         return response
 
+    def get_form_kwargs(self):
+        kwargs = super(TransactionView, self).get_form_kwargs()
+        kwargs['request'] = self.request
+        return kwargs
+
 class TransferView(CreateView):
     form_class = TransferForm
     template_name = 'web/transfer.html'
     success_url = '/transfer'
 
     def get_context_data(self, **kwargs):
-        kwargs['object_list'] = Transfer.objects.all()
+        kwargs['object_list'] = TransferFilter(self.request.GET, queryset=Transfer.objects.all())
         return super(TransferView, self).get_context_data(**kwargs)
 
 

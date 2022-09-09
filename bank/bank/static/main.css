@@ -119,13 +119,77 @@ ul {
 
 .content .container {
     box-shadow: 0 0px 15px rgba(0, 0, 0, .6);;
-    display: block;
+    display: flex;
     margin: 40px 120px;
     height: flex;
     min-height: calc(100% - 80px);
-    text-align: center;
     border: solid 1px coral;
     border-radius: 1%;
     background-color: white;
 }
 
+.content .container .main {
+    display: block;
+    border-radius: 1%;
+    background-color: inherit;
+    position: relative;
+    width: 100%;
+    
+}
+
+.content .container .filter {
+    padding: 20px 5px;
+    border-left: solid 1px #818181;
+    display: block;
+    width: 160px;
+    margin-left: auto;
+    font-size: 14px;
+}
+
+h1 {
+    text-align: center;
+    font-family: "Lato", sans-serif;
+    position: absolute;
+    display: flex;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -65%);
+    box-sizing: border-box;
+}
+
+h2 {
+    text-align: center;
+    font-family: "Lato", sans-serif;
+}
+
+.content .container .filter .filter-header {
+    text-align: center;
+    margin-top: 0px;
+}
+
+.content .container .main .form {
+    display: block;
+    text-align: center;
+}
+
+.send-button {
+    width:250px; 
+    height:40px;
+    border: 0;
+    border-radius: 0.375em;
+    background:#2ea44f;
+    color:#fff;
+    z-index: 1;
+    font-size:18px;
+    cursor:pointer; margin: 20px;
+}
+
+.send-button:hover {
+    background:#258741;;
+}
+
+.send-button::before {
+    width: 105%;
+    height: 105%;
+
+}

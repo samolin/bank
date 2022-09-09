@@ -1,6 +1,7 @@
+from dataclasses import dataclass, fields
 from users.models import CustomUser
 from django import forms
-from api.models import Replenishment, Transaction, Transfer
+from api.models import Replenishment, Transaction, Transfer, Account
 
 
 class UserRegistartionForm(forms.ModelForm):
@@ -36,10 +37,20 @@ class TransactionForm(forms.ModelForm):
     class Meta:
         model = Transaction
         fields = ['account', 'amount', 'purchase']
-        
+        widgets = {
+            'amount': forms.NumberInput(attrs={'step': 0.25, 'placeholder': 'amount', 'class': 'form-control'}),
+            'purchase': forms.TextInput(attrs={'placeholder': 'explanation'}),
+                  }
+
+    def __init__(self, **kwargs):
+        self.request = kwargs.pop('request')
+        super(TransactionForm, self).__init__(**kwargs)
+        self.fields['account'].queryset = Account.objects.filter(user=self.request.user)
+
 class TransferForm(forms.ModelForm):
 
     class Meta:
         model = Transfer
         fields = ['from_account', 'to_account', 'amount']
+    
     
